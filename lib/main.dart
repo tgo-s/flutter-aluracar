@@ -12,12 +12,22 @@ class Root extends StatelessWidget {
         ),
         drawer: _buildDrawer(),
         body: ListView.builder(
-          itemBuilder: (context, i){
-            if(i.isOdd) return Divider();
+          itemBuilder: (context, i) {
+            if (i.isOdd) return Divider();
             return ListTile(
               title: Text("Carro " + i.toString()),
-              );
+            );
           },
+        ),
+        bottomSheet: Container(
+          child: Row(
+            children: <Widget>[
+              Text("COL 1"),
+              Text("COL 2"),
+              Text("COL 2"),
+            ],
+            crossAxisAlignment: CrossAxisAlignment.center,
+          ),
         ),
       ),
     );
@@ -25,19 +35,71 @@ class Root extends StatelessWidget {
 
   Drawer _buildDrawer() {
     return Drawer(
-        child: ListView(
-          children: <Widget>[
-            _buildAvatarPerfilDrawer(),
-            _labelPerfil("João Da Silva"),
-            _labelPerfil("joao@teste.com.br"),
-            MaterialButton(
-                child: Text("Editar Perfil"),
-                textColor: Colors.lightBlue,
-                onPressed: () {},
-              ),
-          ],
+      child: DefaultTabController(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Configurações"),
+            bottom: TabBar(
+              tabs: <Widget>[
+                Tab(
+                  text: "Perfil",
+                ),
+                Tab(
+                  text: "Editar",
+                )
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: <Widget>[
+              _buildPerfil(),
+              Container(
+                child: Text("Editar"),
+              )
+            ],
+          ),
         ),
-      );
+        length: 2,
+      ),
+    );
+  }
+
+  ListView _buildPerfil() {
+    return ListView(
+      children: <Widget>[
+        _buildAvatarPerfilDrawer(),
+        _labelPerfil("João Da Silva"),
+        Divider(),
+        _labelPerfil("joao@teste.com.br"),
+        Divider(),
+        _buildPerfilButton("Editar Perfil", () {}),
+      ],
+    );
+  }
+
+  // Drawer _buildDrawer() {
+  //   return Drawer(
+  //     child: ListView(
+  //       children: <Widget>[
+  //         _buildAvatarPerfilDrawer(),
+  //         _labelPerfil("João Da Silva"),
+  //         _labelPerfil("joao@teste.com.br"),
+  //         _buildPerfilButton("Editar Perfil", () {}),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  Container _buildPerfilButton(String label, Function onPressedFunction) {
+    return Container(
+      child: RaisedButton(
+        child: Text(label),
+        textColor: Colors.white,
+        color: Colors.lightBlue,
+        onPressed: onPressedFunction,
+      ),
+      padding: EdgeInsets.only(left: 45.0, right: 45.0),
+    );
   }
 
   Container _buildAvatarPerfilDrawer() {
@@ -49,9 +111,9 @@ class Root extends StatelessWidget {
       ),
       //color: Colors.grey,
       padding: EdgeInsets.all(10.0),
-      decoration: BoxDecoration(color: Colors.white70, boxShadow: <BoxShadow>[
-        BoxShadow(blurRadius: 5.0, color: Colors.grey)
-      ]),
+      // decoration: BoxDecoration(color: Colors.white70, boxShadow: <BoxShadow>[
+      //   BoxShadow(blurRadius: 5.0, color: Colors.grey)
+      // ]),
     );
   }
 
@@ -64,9 +126,9 @@ class Root extends StatelessWidget {
         style: TextStyle(color: Colors.lightBlue),
         textAlign: TextAlign.center,
       ),
-      decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey)),
-      ),
+      // decoration: BoxDecoration(
+      //   border: Border(bottom: BorderSide(color: Colors.grey)),
+      // ),
       margin: EdgeInsets.only(left: 50.0, right: 50.0),
     );
   }
