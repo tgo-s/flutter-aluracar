@@ -10,15 +10,8 @@ class Root extends StatelessWidget {
         appBar: AppBar(
           title: Text("Car Test"),
         ),
-        drawer: _buildDrawer(),
-        body: ListView.builder(
-          itemBuilder: (context, i) {
-            if (i.isOdd) return Divider();
-            return ListTile(
-              title: Text("Carro " + i.toString()),
-            );
-          },
-        ),
+        drawer: _buildDrawer(context),
+        body: new CarListWidget(),
         bottomSheet: Container(
           child: Row(
             children: <Widget>[
@@ -33,13 +26,13 @@ class Root extends StatelessWidget {
     );
   }
 
-  Drawer _buildDrawer() {
+  Drawer _buildDrawer(BuildContext context) {
     return Drawer(
       child: DefaultTabController(
         child: Scaffold(
           appBar: AppBar(
-            title: Text("Configurações"),
-            bottom: TabBar(
+            automaticallyImplyLeading: false,
+            title: TabBar(
               tabs: <Widget>[
                 Tab(
                   text: "Perfil",
@@ -52,7 +45,7 @@ class Root extends StatelessWidget {
           ),
           body: TabBarView(
             children: <Widget>[
-              _buildPerfil(),
+              _buildPerfil(context),
               Container(
                 child: Text("Editar"),
               )
@@ -64,7 +57,7 @@ class Root extends StatelessWidget {
     );
   }
 
-  ListView _buildPerfil() {
+  ListView _buildPerfil(BuildContext context) {
     return ListView(
       children: <Widget>[
         _buildAvatarPerfilDrawer(),
@@ -73,6 +66,10 @@ class Root extends StatelessWidget {
         _labelPerfil("joao@teste.com.br"),
         Divider(),
         _buildPerfilButton("Editar Perfil", () {}),
+        Divider(),
+        _buildPerfilButton("Meus Agendamentos", () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarListWidget()));
+        }),
       ],
     );
   }
@@ -130,6 +127,24 @@ class Root extends StatelessWidget {
       //   border: Border(bottom: BorderSide(color: Colors.grey)),
       // ),
       margin: EdgeInsets.only(left: 50.0, right: 50.0),
+    );
+  }
+}
+
+class CarListWidget extends StatelessWidget {
+  const CarListWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemBuilder: (context, i) {
+        if (i.isOdd) return Divider();
+        return ListTile(
+          title: Text("Carro " + i.toString()),
+        );
+      },
     );
   }
 }
