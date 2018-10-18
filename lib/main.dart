@@ -12,20 +12,38 @@ class Root extends StatelessWidget {
         ),
         drawer: _buildDrawer(context),
         body: new CarListWidget(),
-        bottomSheet: Container(
-          child: Row(
-            children: <Widget>[
-              Text("COL 1"),
-              Text("COL 2"),
-              Text("COL 2"),
-            ],
-            crossAxisAlignment: CrossAxisAlignment.center,
-          ),
-        ),
       ),
     );
   }
 
+// Third Version
+  // Drawer _buildDrawer(BuildContext context) {
+  //   return Drawer(
+  //     child: ListView(
+  //       children: <Widget>[
+  //         DrawerHeader(
+  //           child: Center(
+  //             child: _buildAvatarPerfilDrawer(context, () {}),
+  //           ),
+  //         ),
+  //         ListTile(
+  //           title: Text("João da Silva", textAlign: TextAlign.center),
+  //           subtitle: Text("joao@teste.com.br", textAlign: TextAlign.center),
+  //         ),
+  //         ListTile(
+  //           title: RaisedButton(
+  //             child: Text("Editar"),
+  //             textColor: Colors.white,
+  //             color: Colors.lightBlue,
+  //             onPressed: () => Navigator.pop(context),
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  // Second Version
   Drawer _buildDrawer(BuildContext context) {
     return Drawer(
       child: DefaultTabController(
@@ -60,20 +78,24 @@ class Root extends StatelessWidget {
   ListView _buildPerfil(BuildContext context) {
     return ListView(
       children: <Widget>[
-        _buildAvatarPerfilDrawer(),
+        ListTile(
+          title: _buildAvatarPerfilDrawer(context, () {}),
+        ),
+        Divider(),
         _labelPerfil("João Da Silva"),
         Divider(),
         _labelPerfil("joao@teste.com.br"),
         Divider(),
         _buildPerfilButton("Editar Perfil", () {}),
-        Divider(),
         _buildPerfilButton("Meus Agendamentos", () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarListWidget()));
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => CarListWidget()));
         }),
       ],
     );
   }
 
+  // First Version
   // Drawer _buildDrawer() {
   //   return Drawer(
   //     child: ListView(
@@ -99,19 +121,26 @@ class Root extends StatelessWidget {
     );
   }
 
-  Container _buildAvatarPerfilDrawer() {
-    return Container(
-      child: Image.asset(
-        'assets/img/avatar_perfil.png',
-        height: 120.0,
-        width: 120.0,
-      ),
-      //color: Colors.grey,
-      padding: EdgeInsets.all(10.0),
-      // decoration: BoxDecoration(color: Colors.white70, boxShadow: <BoxShadow>[
-      //   BoxShadow(blurRadius: 5.0, color: Colors.grey)
-      // ]),
-    );
+  Center _buildAvatarPerfilDrawer(
+      BuildContext context, Function changeFotoFuncion) {
+    return Center(
+        child: Stack(
+      children: <Widget>[
+        Image.asset(
+          'assets/img/avatar_perfil.png',
+          height: 120.0,
+          width: 120.0,
+        ),
+        IconButton(
+          icon: Icon(
+            Icons.add_a_photo,
+            color: Colors.black54,
+          ),
+          onPressed: changeFotoFuncion,
+        )
+      ],
+      alignment: Alignment(0.8, 1.4),
+    ));
   }
 
   Container _labelPerfil(String texto) {
